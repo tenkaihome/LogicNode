@@ -1,0 +1,442 @@
+@import "tailwindcss";
+
+:root {
+  --surface: #111;
+  --surface-hover: rgba(15, 15, 22, 0.95);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.22);
+  --accent: #ccff00;
+}
+
+@theme inline {
+  --color-background: #000;
+  --color-foreground: #fff;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #050508;
+  color: #fff;
+  font-family: monospace, system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── BACKGROUND ── */
+.bg-image {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.32) saturate(0.75);
+  transition: background-image 1.2s ease;
+}
+
+/* ── HEADER STRIP ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  width: 100%;
+  background: rgba(5, 5, 9, 0.92);     /* more opaque */
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* strong shadow PLUS a colour wash so it reads as a distinct layer */
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 24px 48px rgba(0, 0, 0, 0.35);
+}
+
+.site-header-inner {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Gradient bridge — sits right below the header, part of <main> */
+.header-shadow-bridge {
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
+  pointer-events: none;
+  margin-bottom: -32px;   /* overlap so it blends into first content row */
+  position: relative;
+  z-index: 1;
+}
+
+/* ── LOGO — remove the white background ── */
+/* The logo image itself uses mix-blend-mode so any white becomes transparent */
+.logo-img {
+  width: 40px;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+  filter: brightness(1.3);
+}
+
+/* ── GLASS CARD ── */
+.glass-card {
+  background: var(--surface);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--border);
+  border-radius: 0; border: 2px solid #555; box-shadow: 4px 4px 0 #ccff00;
+  padding: 24px 24px 24px 24px;   /* uniform, not too tight not too loose */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 0;                          /* let children control their own spacing */
+}
+
+.glass-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Sub-section inside a card — used for nested blocks */
+.card-section {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0;
+  padding: 16px 18px;
+}
+
+/* ── BUTTONS — generous, never cramped ── */
+/* Base pill button used in nav */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 22px;
+  height: 44px;
+  border-radius: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  white-space: nowrap;
+  border: none;
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d4d4d8;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a1a1aa;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.btn-coffee {
+  background: #eab308;
+  color: #000;
+  font-weight: 900;
+  font-size: 13px;
+  gap: 8px;
+  padding: 0 24px;
+  height: 44px;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  border: none;
+}
+
+.btn-coffee:hover {
+  background: #facc15;
+  transform: scale(1.03);
+}
+
+/* Scene dropdown */
+.scene-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 180px;
+  background: rgba(10, 10, 16, 0.96);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  padding: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  z-index: 50;
+}
+
+.scene-item {
+  width: 100%;
+  text-align: left;
+  padding: 11px 16px;
+  border-radius: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  color: #71717a;
+  background: transparent;
+  border: none;
+}
+
+.scene-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.scene-item.active {
+  background: rgba(192, 132, 252, 0.2);
+  color: #e9d5ff;
+}
+
+/* ── TIMER ── */
+.timer-ring {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+}
+
+.timer-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.timer-circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 8;
+}
+
+.timer-circle-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* Mode tab row */
+.mode-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.mode-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: transparent;
+  border: none;
+  color: #52525b;
+}
+
+.mode-tab.active {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.mode-tab:not(.active):hover {
+  color: #d4d4d8;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Start / Reset buttons */
+.timer-start {
+  flex: 1;
+  height: 64px;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.timer-start.idle {
+  background: #9333ea;
+  color: #fff;
+}
+
+.timer-start.idle:hover {
+  background: #a855f7;
+  transform: scale(1.02);
+}
+
+.timer-start.running {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.timer-reset {
+  width: 64px;
+  height: 64px;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #71717a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.timer-reset:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ── SOUND GRID ── */
+.sound-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 16px;
+  background: rgba(8, 8, 14, 0.75);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  transition: border-color 0.25s, background 0.25s;
+  cursor: default;
+}
+
+.sound-card.active {
+  background: rgba(20, 14, 32, 0.9);
+  border-color: rgba(192, 132, 252, 0.35);
+  box-shadow: 0 0 24px rgba(192, 132, 252, 0.12);
+}
+
+.sound-icon-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #52525b;
+}
+
+.sound-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d4d4d8;
+}
+
+.sound-icon-btn.active {
+  background: #7e22ce;
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 18px rgba(126, 34, 206, 0.5);
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-box {
+  background: #0c0c12;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 32px;
+  max-width: 400px;
+  width: 100%;
+  padding: 44px 40px;
+  text-align: center;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85);
+  animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* ── LAYOUT ── */
+.main-container {
+  max-width: 1560px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 32px;
+}
