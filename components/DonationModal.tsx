@@ -49,7 +49,7 @@ export default function DonationModal({ isOpen, onClose }: Props) {
           display: 'inline-block', marginBottom: 24,
         }}>
           <Image
-            src="/qr.png"
+            src="/qr.jpg"
             alt="Donation QR"
             width={168}
             height={168}
@@ -59,7 +59,7 @@ export default function DonationModal({ isOpen, onClose }: Props) {
 
         {/* Donate button */}
         <a
-          href="#"
+          href="https://buymeacoffee.com/logicnode"
           target="_blank"
           rel="noopener noreferrer"
           className="btn-coffee"
