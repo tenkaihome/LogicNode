@@ -6,7 +6,7 @@ import SoundGrid from '@/components/SoundGrid';
 import Radio from '@/components/Radio';
 import DonationModal from '@/components/DonationModal';
 import TaskManager from '@/components/TaskManager';
-import { Settings, Coffee, Image as ImageIcon, Zap } from 'lucide-react';
+import { Settings, Coffee, Image as ImageIcon, Zap, Users } from 'lucide-react';
 import Image from 'next/image';
 
 const backgrounds = [
@@ -19,6 +19,7 @@ export default function Home() {
   const [currentBg, setCurrentBg]     = useState(backgrounds[0]);
   const [isDonationOpen, setDonation] = useState(false);
   const [showBgMenu, setShowBgMenu]   = useState(false);
+  const [visitors, setVisitors]       = useState(438);
 
   const [focusSeconds, setFocusSeconds] = useState(0);
   const [sessionsCompleted, setSessionsCompleted] = useState(0);
@@ -28,6 +29,11 @@ export default function Home() {
     const savedSessions = localStorage.getItem('LOGICNODE_sessions');
     if (savedFocus) setFocusSeconds(parseInt(savedFocus, 10));
     if (savedSessions) setSessionsCompleted(parseInt(savedSessions, 10));
+
+    const visitorInterval = setInterval(() => {
+      setVisitors(prev => prev + (Math.random() > 0.6 ? Math.floor(Math.random() * 2) + 1 : 0));
+    }, 7000);
+    return () => clearInterval(visitorInterval);
   }, []);
 
   const handleTick = (mode: 'focus' | 'break') => {
@@ -97,6 +103,11 @@ export default function Home() {
                   ))}
                 </div>
               )}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '0 12px', color: '#d4d4d8', fontSize: 12, fontWeight: 700, background: 'rgba(255,255,255,0.06)', borderRadius: 999, height: 34, border: '1px solid rgba(255,255,255,0.1)' }}>
+              <Users size={14} style={{ color: '#ccfc03' }} />
+              <span style={{ fontVariantNumeric: 'tabular-nums' }}>{visitors}</span>
             </div>
 
             <button className="btn-icon"><Settings size={17} /></button>
